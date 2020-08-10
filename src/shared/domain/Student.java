@@ -13,10 +13,11 @@ public class Student {
     private char gender;
     private String education;
     private String workingEx;
+    private String personalStat;
     private String contInfo;
     private ArrayList<Vacancy> vacanciesApplied;
 
-    public Student(String email, String password, String fName, int age, char gender, String education, String workingEx, String contInfo) {
+    public Student(String email, String password, String fName, int age, char gender, String education, String workingEx, String personalStat,String contInfo) {
         this.email = email;
         this.password = password;
         this.fName = fName;
@@ -24,6 +25,7 @@ public class Student {
         this.gender = gender;
         this.education = education;
         this.workingEx = workingEx;
+        this.personalStat = personalStat;
         this.contInfo = contInfo;
         vacanciesApplied = new ArrayList<>();
     }
@@ -66,6 +68,14 @@ public class Student {
 
     public void setGender(char gender) {
         this.gender = gender;
+    }
+
+    public String getPersonalStat() {
+        return personalStat;
+    }
+
+    public void setPersonalStat(String personalStat) {
+        this.personalStat = personalStat;
     }
 
     public String getEducation() {

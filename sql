@@ -1,8 +1,8 @@
 CREATE TABLE student(
 	student_id SERIAL PRIMARY KEY,
 	email VARCHAR(50) NOT NULL,
-	pass VARCHAR(20) NOT NULL,
-	fullname VARCHAR(20) NOT NULL,
+	pass VARCHAR(50) NOT NULL,
+	fullname VARCHAR(50) NOT NULL,
 	age INT NOT NULL,
 	gender CHAR NOT NULL,
 	education TEXT,
