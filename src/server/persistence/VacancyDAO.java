@@ -89,4 +89,30 @@ public class VacancyDAO extends DAO<Vacancy> {
             conn.close();
         }
     }
+
+    public Vacancy getById (Long id) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        Statement stmt = conn.createStatement();
+
+        String sql = String.format("SELECT * FROM vacancy WHERE vacancy_id = %d", id);
+
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if(rs.next()) {
+                Vacancy v = new Vacancy(
+                        rs.getString(2),
+                        rs.getDouble(3)
+                );
+                v.setId(rs.getLong(1));
+                return v;
+            } else {
+                throw new IllegalArgumentException("No such vacancy");
+            }
+
+        } finally {
+            stmt.close();
+            conn.close();
+        }
+    }
 }
