@@ -121,4 +121,23 @@ public class Student {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Student ){
+            Student other = (Student) obj;
+            return id == other.id
+                    && email.equals(other.email)
+                    && password.equals(other.password)
+                    && fName.equals(other.fName)
+                    && age == other.age
+                    && gender == other.gender
+                    && education.equals(other.education)
+                    && workingEx.equals(other.workingEx)
+                    && personalStat.equals(other.personalStat)
+                    && contInfo.equals(other.contInfo)
+                    && vacanciesApplied.equals(other.vacanciesApplied);
+        }
+        else return false;
+    }
 }

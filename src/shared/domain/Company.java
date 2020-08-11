@@ -72,4 +72,18 @@ public class Company {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Company ){
+            Company other = (Company) obj;
+            return id == other.id
+                    && email.equals(other.email)
+                    && password.equals(other.password)
+                    && compName.equals(other.compName)
+                    && description.equals(other.description)
+                    && offers.equals(other.offers);
+        }
+        else return false;
+    }
 }

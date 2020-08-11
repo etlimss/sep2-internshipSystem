@@ -67,8 +67,8 @@ public class StudentDAO extends DAO<Student> {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
 
         String sql = "UPDATE student SET email = ?" +
-                ", password = ?" +
-                ", fName = ?" +
+                ", pass = ?" +
+                ", fullname = ?" +
                 ", age = ?" +
                 ", gender = ?" +
                 ", education = ?" +

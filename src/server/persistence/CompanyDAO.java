@@ -57,10 +57,10 @@ public class CompanyDAO extends DAO<Company> {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
 
         String sql = "UPDATE company SET email = ?" +
-                ", password = ?" +
-                ", compName = ?" +
+                ", pass = ?" +
+                ", company_name = ?" +
                 ", description = ?" +
-                " WHERE company_id = ?";    // WHERE !!!
+                " WHERE company_id = ?";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
 

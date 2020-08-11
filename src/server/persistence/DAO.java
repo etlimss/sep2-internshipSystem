@@ -10,7 +10,7 @@ public abstract class DAO<T> {
 
     protected final static String DBURL = "jdbc:postgresql://localhost/Sep2";
     protected final static String DBUSER = "postgres";
-    protected final static String DBPASS = "smilte";
+    protected final static String DBPASS = "6311";
 
     public DAO (String tableName) {
         this.tableName = tableName;

@@ -1,5 +1,6 @@
 package test;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.persistence.StudentDAO;
 import shared.domain.Student;
@@ -12,14 +13,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class StudentPersistenceTest {
     private Random rand = new Random();
+    private StudentDAO dao;
+
+    @BeforeEach
+    public void setup() {
+        dao = new StudentDAO();
+    }
 
     @Test
     public void testInsert() throws SQLException {
         Student s1 = new Student(randomString(), randomString(), randomString(), rand.nextInt(), ((char) (rand.nextInt('Z' - 'A') + 'A')), randomString(),randomString(), randomString(), randomString());
         assertNull(s1.getId());
 
-        StudentDAO sdao = new StudentDAO();
-        sdao.persists(s1);
+        dao.persists(s1);
 
         assertNotNull(s1.getId());
     }
@@ -28,7 +34,7 @@ public class StudentPersistenceTest {
     public void testGet() throws SQLException {
         String email = randomString();
         Student st = new Student(email, randomString(), randomString(), rand.nextInt(), ((char) (rand.nextInt('Z' - 'A') + 'A')), randomString(),randomString(), randomString(), randomString());
-        StudentDAO dao = new StudentDAO();
+
         dao.persists(st);
 
         assertNotNull(st.getId());
@@ -42,7 +48,22 @@ public class StudentPersistenceTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws SQLException {
+        String email = randomString();
+
+        Student s1 =  new Student(email, randomString(), randomString(), rand.nextInt(), ((char) (rand.nextInt('Z' - 'A') + 'A')), randomString(),randomString(), randomString(), randomString());
+
+        dao.persists(s1);
+
+        s1.setAge(15);
+
+        dao.update(s1);
+
+        Student res = dao.getByEmail(email);
+
+        assertEquals(s1,res);
+
+
 
     }
 }

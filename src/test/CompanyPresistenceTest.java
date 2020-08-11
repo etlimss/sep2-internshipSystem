@@ -1,5 +1,6 @@
 package test;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.persistence.CompanyDAO;
 import server.persistence.StudentDAO;
@@ -15,6 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CompanyPresistenceTest {
 
     private Random rand = new Random();
+    private CompanyDAO dao;
+
+    @BeforeEach
+    public void setup() {
+        dao = new CompanyDAO();
+    }
+
 
     @Test
     public void testInsert() throws SQLException {
@@ -45,7 +53,20 @@ public class CompanyPresistenceTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws SQLException {
+        String email = randomString();
+
+        Company cmp = new Company(email, randomString(), randomString(), randomString());
+
+        dao.persists(cmp);
+
+        cmp.setDescription(randomString());
+
+        dao.update(cmp);
+
+        Company res = dao.getByEmail(email);
+
+        assertEquals(cmp, res);
 
     }
 }
