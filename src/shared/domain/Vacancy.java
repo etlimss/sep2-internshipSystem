@@ -1,8 +1,9 @@
 package shared.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Vacancy {
+public class Vacancy implements Serializable {
 
     private Long id;
 
