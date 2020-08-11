@@ -58,7 +58,7 @@ public class VacancyDAO extends DAO<Vacancy> {
 //        }
 //    }
 
-    public Vacancy update(Vacancy vc) throws SQLException {
+   /* public Vacancy update(Vacancy vc) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
 
         String sql = "UPDATE vacancy SET email = ?" + //wtf to do here?
@@ -81,4 +81,4 @@ public class VacancyDAO extends DAO<Vacancy> {
             conn.close();
         }
     }
-}
+*/}

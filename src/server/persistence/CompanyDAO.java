@@ -12,7 +12,7 @@ public class CompanyDAO extends DAO<Company> {
     }
 
     public Long persists(Company company) throws SQLException {
-        String sql = String.format("insert into company(email, pass, compName, description) " +
+        String sql = String.format("insert into company(email, pass, company_name, description) " +
                         "values('%s', '%s', '%s', '%s') RETURNING company_id",
                 company.getEmail(),
                 company.getPassword(),
@@ -40,16 +40,11 @@ public class CompanyDAO extends DAO<Company> {
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getInt(5),
-                        rs.getString(6).charAt(0),
-                        rs.getString(7),
-                        rs.getString(8),
-                        rs.getString(9),
-                        rs.getString(10)
+                        rs.getString(5)
                 );
                 cmp.setId(rs.getLong(1));
             } else {
-                throw new IllegalArgumentException("No such student");
+                throw new IllegalArgumentException("No such company");
             }
             return cmp;
         } finally {
@@ -64,15 +59,16 @@ public class CompanyDAO extends DAO<Company> {
         String sql = "UPDATE company SET email = ?" +
                 ", password = ?" +
                 ", compName = ?" +
-                ", description = ?";    // WHERE !!!
+                ", description = ?" +
+                " WHERE company_id = ?";    // WHERE !!!
 
         PreparedStatement stmt = conn.prepareStatement(sql);
 
         stmt.setString(1, cmp.getEmail());
         stmt.setString(2, cmp.getPassword());
         stmt.setString(3, cmp.getCompName());
-        stmt.setString(5, cmp.getDescription());
-
+        stmt.setString(4, cmp.getDescription());
+        stmt.setLong(5, cmp.getId());
 
         try {
             stmt.executeUpdate();

@@ -14,8 +14,8 @@ CREATE TABLE student(
 CREATE TABLE company (
 	company_id SERIAL PRIMARY KEY,
 	email VARCHAR(50) NOT NULL,
-	pass VARCHAR(20) NOT NULL,
-	company_name VARCHAR(20) NOT NULL,
+	pass VARCHAR(50) NOT NULL,
+	company_name VARCHAR(50) NOT NULL,
 	description TEXT
 );
 
