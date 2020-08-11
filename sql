@@ -22,7 +22,7 @@ CREATE TABLE company (
 CREATE TABLE vacancy (
 	vacancy_id SERIAL PRIMARY KEY,
 	description TEXT NOT NULL,
-	salary NUMERIC(2) NOT NULL,
+	salary NUMERIC(10, 2) NOT NULL,
 	company_id INT NOT NULL REFERENCES company(company_id)
 );
 

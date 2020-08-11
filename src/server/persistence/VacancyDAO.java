@@ -4,6 +4,7 @@ package server.persistence;
 import shared.domain.Vacancy;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class VacancyDAO extends DAO<Vacancy> {
 
@@ -11,11 +12,11 @@ public class VacancyDAO extends DAO<Vacancy> {
         super("vacancy");
     }
 
-    public Long persists(Vacancy vacancy) throws SQLException {
-        String sql = String.format("insert into vacancy(description, salary) " +
-                        "values('%s', %d) RETURNING company_id",
+    public Long persists(Vacancy vacancy, Long company_id) throws SQLException {
+        String sql = String.format("insert into vacancy(description, salary, company_id) " +
+                        "values('%s', %f, %d) RETURNING vacancy_id",
                 vacancy.getDescription(),
-                vacancy.getSalary()
+                vacancy.getSalary() , company_id
         );
         Long id = insert(sql);
 
@@ -23,53 +24,43 @@ public class VacancyDAO extends DAO<Vacancy> {
         return id;
     }
 
+    public ArrayList<Vacancy> getByCompId(Long id) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        Statement stmt = conn.createStatement();
 
-    //WTF to do w this block here? how do we get the vacancy? By what?
-//    public Company getByEmail(String email) throws SQLException {
-//        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
-//        Statement stmt = conn.createStatement();
-//
-//        String sql = String.format("SELECT * FROM company WHERE email = '%s'", email);
-//
-//        try {
-//            ResultSet rs = stmt.executeQuery(sql);
-//
-//            Company cmp;
-//            if(rs.next()) {
-//                cmp = new Company(
-//                        rs.getString(2),
-//                        rs.getString(3),
-//                        rs.getString(4),
-//                        rs.getInt(5),
-//                        rs.getString(6).charAt(0),
-//                        rs.getString(7),
-//                        rs.getString(8),
-//                        rs.getString(9),
-//                        rs.getString(10)
-//                );
-//                cmp.setId(rs.getLong(1));
-//            } else {
-//                throw new IllegalArgumentException("No such student");
-//            }
-//            return cmp;
-//        } finally {
-//            stmt.close();
-//            conn.close();
-//        }
-//    }
+        String sql = String.format("SELECT * FROM vacancy WHERE company_id = %d", id);
 
-   /* public Vacancy update(Vacancy vc) throws SQLException {
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+
+            ArrayList<Vacancy> vac = new ArrayList<>();
+            while(rs.next()) {
+                Vacancy v = new Vacancy(
+                        rs.getString(2),
+                        rs.getDouble(3)
+                );
+                v.setId(rs.getLong(1));
+                vac.add(v);
+            }
+            return vac;
+        } finally {
+            stmt.close();
+            conn.close();
+        }
+    }
+
+
+   public Vacancy update(Vacancy vc) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
 
-        String sql = "UPDATE vacancy SET email = ?" + //wtf to do here?
-                ", description = ?" +
-                ", salary = ?";
+        String sql = "UPDATE vacancy SET description = ?" +
+                ", salary = ? WHERE vacancy_id = ?";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
 
-        stmt.setString(1, vc.getEmail()); //need this??
-        stmt.setString(5, vc.getDescription());
-        stmt.setInt(5, vc.getSalary());
+        stmt.setString(1, vc.getDescription());
+        stmt.setDouble(2, vc.getSalary());
+        stmt.setLong(3, vc.getId());
 
 
         try {
@@ -81,4 +72,21 @@ public class VacancyDAO extends DAO<Vacancy> {
             conn.close();
         }
     }
-*/}
+
+    public void remove(Long id) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+
+        String sql = "DELETE FROM vacancy WHERE vacancy_id = ?";
+
+        PreparedStatement stp = conn.prepareStatement(sql);
+
+        stp.setLong(1, id);
+
+        try {
+            stp.executeUpdate();
+        } finally {
+            stp.close();
+            conn.close();
+        }
+    }
+}

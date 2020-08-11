@@ -55,4 +55,21 @@ public class Vacancy {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Vacancy ){
+            Vacancy other = (Vacancy) obj;
+            return id == other.id
+                    && description.equals(other.description)
+                    && salary == other.salary
+                    && candidates.equals(other.candidates);
+        }
+        else return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("vacancy(%d, %s, %f)",id, description, salary);
+    }
 }

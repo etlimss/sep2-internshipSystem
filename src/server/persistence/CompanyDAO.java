@@ -2,13 +2,17 @@ package server.persistence;
 
 
 import shared.domain.Company;
+import shared.domain.Vacancy;
 
 import java.sql.*;
 
 public class CompanyDAO extends DAO<Company> {
 
-    public CompanyDAO() {
+    private VacancyDAO vdao;
+
+    public CompanyDAO(VacancyDAO vdao) {
         super("company");
+        this.vdao = vdao;
     }
 
     public Long persists(Company company) throws SQLException {
@@ -22,6 +26,10 @@ public class CompanyDAO extends DAO<Company> {
         Long id = insert(sql);
 
         company.setId(id);
+
+        for (Vacancy v: company.getOffers()) {
+            vdao.persists(v, company.getId());
+        }
         return id;
     }
 
@@ -34,19 +42,23 @@ public class CompanyDAO extends DAO<Company> {
         try {
             ResultSet rs = stmt.executeQuery(sql);
 
-            Company cmp;
             if(rs.next()) {
-                cmp = new Company(
+                Company cmp = new Company(
                         rs.getString(2),
                         rs.getString(3),
                         rs.getString(4),
                         rs.getString(5)
                 );
                 cmp.setId(rs.getLong(1));
+
+                for (Vacancy v: vdao.getByCompId(cmp.getId())) {
+                    cmp.addOffer(v);
+                }
+                return cmp;
             } else {
                 throw new IllegalArgumentException("No such company");
             }
-            return cmp;
+
         } finally {
             stmt.close();
             conn.close();
