@@ -6,6 +6,7 @@ import shared.domain.Student;
 import shared.domain.Vacancy;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class StudentDAO extends DAO<Student> {
 
@@ -135,5 +136,96 @@ public class StudentDAO extends DAO<Student> {
             stmt.close();
             conn.close();
         }
+    }
+
+    public void applyForVacancy(Long sid, Long vid) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+
+        String sql = "INSERT INTO student_vacancy VALUES(?,?)";
+
+        PreparedStatement prs = conn.prepareStatement(sql);
+
+        prs.setLong(1, sid);
+        prs.setLong(2, vid);
+
+        try {
+            prs.executeUpdate();
+        } finally {
+            prs.close();
+            conn.close();
+        }
+
+    }
+
+    public Student getStudentById(Long sid) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+
+        String sql = "SELECT * FROM student WHERE student_id = ?";
+
+        PreparedStatement vprs = conn.prepareStatement("SELECT * FROM student_vacancy WHERE student_id = ? ");
+
+        PreparedStatement prs = conn.prepareStatement(sql);
+
+        prs.setLong(1, sid);
+        vprs.setLong(1, sid);
+
+        try {
+            ResultSet rs = prs.executeQuery(sql);
+
+            if(rs.next()) {
+                Student st = new Student(
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getInt(5),
+                        rs.getString(6).charAt(0),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10)
+                );
+                st.setId(rs.getLong(1));
+                ResultSet vrs = vprs.executeQuery();
+                while (vrs.next()) {
+                    Vacancy v = vdao.getById(vrs.getLong(1));
+
+                    st.addVacancy(v);
+                }
+                return st;
+            } else {
+                throw new IllegalArgumentException("No such student");
+            }
+        } finally {
+            prs.close();
+            vprs.close();
+            conn.close();
+        }
+    }
+
+    public ArrayList<Student> getVacApplicants(Long vid) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+
+        String sql = "SELECT student_id FROM student_vacancy WHERE vacancy_id = ?";
+
+        PreparedStatement prs = conn.prepareStatement(sql);
+        prs.setLong(1,vid);
+
+        try {
+            ResultSet res = prs.executeQuery();
+
+            ArrayList<Student> candidates = new ArrayList<>();
+
+            while (res.next()) {
+                Student student = getStudentById(res.getLong(1));
+
+                candidates.add(student);
+            }
+            return candidates;
+        }
+        finally {
+            prs.close();
+            conn.close();
+        }
+
     }
 }

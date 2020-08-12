@@ -115,4 +115,31 @@ public class VacancyDAO extends DAO<Vacancy> {
             conn.close();
         }
     }
+
+    public ArrayList<Vacancy> getAllVacancies() throws SQLException {
+
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        Statement stmt = conn.createStatement();
+
+        String sql = String.format("SELECT * FROM vacancy");
+
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+
+            ArrayList<Vacancy> vac = new ArrayList<>();
+            while(rs.next()) {
+                Vacancy v = new Vacancy(
+                        rs.getString(2),
+                        rs.getDouble(3)
+                );
+                v.setId(rs.getLong(1));
+                vac.add(v);
+            }
+            return vac;
+        } finally {
+            stmt.close();
+            conn.close();
+        }
+
+    }
 }

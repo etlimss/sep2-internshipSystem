@@ -1,4 +1,4 @@
-package server.mediator;
+package shared.mediator;
 
 import shared.domain.Company;
 import shared.domain.Student;
@@ -15,8 +15,8 @@ public interface InternshipMediator extends Remote {
     Vacancy createVacancy (String description, double salary, Long id) throws RemoteException;
     ArrayList<Vacancy> getAllVacancies () throws RemoteException;
     void applyForVacancy(Long sId, Long vId) throws RemoteException;
-    void loginStudent(String email, String pass) throws RemoteException;
-    void loginCompany(String email, String pass) throws RemoteException;
+    Student loginStudent(String email, String pass) throws RemoteException;
+    Company loginCompany(String email, String pass) throws RemoteException;
     Student updateStudent(Student s) throws RemoteException;
     Company updateCompany(Company c) throws RemoteException;
     void removeVacancy(Vacancy v) throws RemoteException;
