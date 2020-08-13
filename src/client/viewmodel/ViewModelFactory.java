@@ -1,4 +1,4 @@
-package client.viewModel;
+package client.viewmodel;
 
 import shared.mediator.InternshipMediator;
 
@@ -10,6 +10,10 @@ public class ViewModelFactory {
         this.internmed = internmed;
     }
 
+    public LoginVM getLoginVM() {
+        return new LoginVM(internmed);
+
+    }
 
 
 }

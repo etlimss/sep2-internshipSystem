@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<?import javafx.scene.control.PasswordField?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="574.0" minWidth="10.0" prefWidth="122.56184387207031" />
@@ -20,12 +21,12 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="password" prefHeight="27.0" prefWidth="519.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <PasswordField fx:id="password" prefHeight="27.0" prefWidth="519.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button mnemonicParsing="false" onAction="#logIn" prefHeight="27.0" prefWidth="308.0" text="Log in" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Label text="ENTER username" GridPane.rowIndex="1" />
+      <Label text="ENTER email" GridPane.rowIndex="1" />
       <Label text="ENTER password" GridPane.rowIndex="2" />
-      <RadioButton fx:id="s" mnemonicParsing="false" text="Student" GridPane.columnIndex="1" />
+      <RadioButton fx:id="student" mnemonicParsing="false" text="Student" GridPane.columnIndex="1" />
       <RadioButton fx:id="company" mnemonicParsing="false" text="Company" />
    </children>
 </GridPane>
