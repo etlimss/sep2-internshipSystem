@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="174.0">
+         <children>
+            <Label text="Username:" />
+            <Label fx:id="usernameStudProfile" prefHeight="17.0" prefWidth="134.0" style="-fx-background-color: d3d3d3;" />
+            <Label text="Full Name" />
+            <Label fx:id="fullName" prefHeight="17.0" prefWidth="134.0" style="-fx-background-color: d3d3d3;" />
+            <Label text="Age" />
+            <Label fx:id="age" prefHeight="17.0" prefWidth="134.0" style="-fx-background-color: d3d3d3;" />
+            <Label text="Gender" />
+            <Label fx:id="gender" prefHeight="17.0" prefWidth="134.0" style="-fx-background-color: d3d3d3;" />
+            <Label text="Contact Information:" />
+            <Label fx:id="contactInfo" prefHeight="140.0" prefWidth="134.0" style="-fx-background-color: d3d3d3;" />
+         </children>
+      </VBox>
+      <VBox prefHeight="400.0" prefWidth="468.0">
+         <children>
+            <Label text="Education" />
+            <Label fx:id="education" prefHeight="113.0" prefWidth="465.0" style="-fx-background-color: d3d3d3;" />
+            <Label text="Working Experince" />
+            <Label fx:id="woringExp" prefHeight="116.0" prefWidth="447.0" style="-fx-background-color: d3d3d3;" />
+            <Label text="Personal Statement" />
+            <Label fx:id="personalStatement" prefHeight="99.0" prefWidth="447.0" style="-fx-background-color: d3d3d3;" />
+         </children>
+      </VBox>
+   </children>
+</HBox>

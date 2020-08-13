@@ -92,17 +92,13 @@ public class InternshipMediatorIMPL implements InternshipMediator {
     @Override
     public Student loginStudent(String email, String pass) throws RemoteException {
         try {
-
             Student s = sdao.getByEmail(email);
 
             if (s.getPassword().equals(pass)){
-
                 return s;
-
             }
-
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
         catch (IllegalArgumentException e){
             return null;

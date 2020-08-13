@@ -4,6 +4,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import shared.domain.Company;
+import shared.domain.Student;
 import shared.mediator.InternshipMediator;
 
 import java.rmi.RemoteException;
@@ -23,12 +25,15 @@ public class LoginVM {
     public void login() {
         try {
             if (isStudent.get()) {
-                mediator.loginStudent(email.get(), password.get());
+                Student s = mediator.loginStudent(email.get(), password.get());
+
                 //open vacancies list
+                System.out.println("STUDENT: " + s);
 
             } else if (isCompany.get()) {
-                mediator.loginCompany(email.get(), password.get());
+                Company c = mediator.loginCompany(email.get(), password.get());
                 //open offers list
+                System.out.println(c);
             }
         }catch (RemoteException e)  {
             System.out.println("Remote exception " + e);

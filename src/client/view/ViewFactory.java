@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ViewFactory {
@@ -19,7 +18,7 @@ public class ViewFactory {
     public Parent loadView(Object view, String path) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(new URL("file://" + path));
+            loader.setLocation(getClass().getResource(path));
             loader.setController(view);
             return loader.load();
         } catch (IOException e) {

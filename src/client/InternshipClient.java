@@ -26,10 +26,13 @@ public class InternshipClient extends Application {
 
             InternshipMediator proxy = (InternshipMediator) reg.lookup(InternshipServer.mediatorName); // SHOULD NOT USE INTERNSHIPSERVER
 
+            proxy.loginStudent("g@gmail.com", "0000");
+
             ViewModelFactory vmf = new ViewModelFactory(proxy);
             ViewFactory vf = new ViewFactory(vmf);
-            stage.setScene(new Scene(vf.loadView(vf.getLoginView(), "fxml/Login.fxml")));
 
+            stage.setScene(new Scene(vf.loadView(vf.getLoginView(), "Login.fxml")));
+            stage.show();
         } catch (RemoteException | NotBoundException e) {
             System.out.println("Could not connect to the RMI registry: ");
             throw new RuntimeException(e);
