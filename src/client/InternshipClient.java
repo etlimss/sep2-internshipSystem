@@ -3,6 +3,7 @@ package client;
 import server.InternshipServer;
 import shared.mediator.InternshipMediator;
 
+import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
