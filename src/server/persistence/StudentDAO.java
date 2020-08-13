@@ -28,7 +28,7 @@ public class StudentDAO extends DAO<Student> {
                         "values('%s', '%s', '%s', %d, '%c', '%s', '%s', '%s', '%s') RETURNING student_id",
                 student.getEmail(),
                 student.getPassword(),
-                student.getfName(),
+                student.getFName(),
                 student.getAge(),
                 student.getGender(),
                 student.getEducation(),
@@ -119,7 +119,7 @@ public class StudentDAO extends DAO<Student> {
 
         stmt.setString(1, st.getEmail());
         stmt.setString(2, st.getPassword());
-        stmt.setString(3, st.getfName());
+        stmt.setString(3, st.getFName());
         stmt.setInt(4, st.getAge());
         stmt.setString(5, "" + st.getGender());
         stmt.setString(6, st.getEducation());
@@ -170,7 +170,7 @@ public class StudentDAO extends DAO<Student> {
         vprs.setLong(1, sid);
 
         try {
-            ResultSet rs = prs.executeQuery(sql);
+            ResultSet rs = prs.executeQuery();
 
             if(rs.next()) {
                 Student st = new Student(

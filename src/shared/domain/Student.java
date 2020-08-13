@@ -47,11 +47,11 @@ public class Student implements Serializable {
         this.password = password;
     }
 
-    public String getfName() {
+    public String getFName() {
         return fName;
     }
 
-    public void setfName(String fName) {
+    public void setFName(String fName) {
         this.fName = fName;
     }
 

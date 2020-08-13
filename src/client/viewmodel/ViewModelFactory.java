@@ -1,6 +1,7 @@
 package client.viewmodel;
 
 import client.InternshipClient;
+import shared.domain.Vacancy;
 import shared.mediator.InternshipMediator;
 
 public class ViewModelFactory {
@@ -40,5 +41,8 @@ public class ViewModelFactory {
     }
     public RegistrationCompanyVM getCompRegVM(){
         return new RegistrationCompanyVM(internmed);
+    }
+    public VacancyVM getVacancyVM(Vacancy v ){
+        return new VacancyVM(internmed,client,v);
     }
 }

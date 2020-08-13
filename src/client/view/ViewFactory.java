@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import shared.domain.Vacancy;
 
 import java.io.IOException;
 
@@ -55,6 +56,9 @@ public class ViewFactory {
 
     public RegistrationCompanyView getCompRegView(){
         return new RegistrationCompanyView(vmf.getCompRegVM(),this);
+    }
+    public VacancyView getVacancyView(Vacancy v){
+        return new VacancyView(this, vmf.getVacancyVM(v));
     }
 
 }

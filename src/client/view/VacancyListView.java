@@ -42,7 +42,7 @@ public class VacancyListView {
 
     @FXML
     private void openVacancy(){
-        vf.openInNewWindow(vf.getVacancyView(),"VacancyView.fxml");
+        vf.openInNewWindow(vf.getVacancyView(vacancies.getSelectionModel().getSelectedItem()),"VacancyView.fxml");
     }
 
     @FXML

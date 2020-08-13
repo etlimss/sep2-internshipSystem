@@ -85,7 +85,7 @@ public class InternshipMediatorIMPL implements InternshipMediator {
         try {
             sdao.applyForVacancy(sId,vId);
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -167,9 +167,11 @@ public class InternshipMediatorIMPL implements InternshipMediator {
     @Override
     public ArrayList<Student> getApplicants(Long vId) throws RemoteException {
         try {
-            return sdao.getVacApplicants(vId);
+            ArrayList<Student> applicants = sdao.getVacApplicants(vId);
+            System.out.println(applicants);
+            return applicants;
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 }
