@@ -13,15 +13,25 @@ public class VacancyDAO extends DAO<Vacancy> {
     }
 
     public Long persists(Vacancy vacancy, Long company_id) throws SQLException {
-        String sql = String.format("insert into vacancy(description, salary, company_id) " +
-                        "values('%s', %f, %d) RETURNING vacancy_id",
-                vacancy.getDescription(),
-                vacancy.getSalary() , company_id
-        );
-        Long id = insert(sql);
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        PreparedStatement prs = conn.prepareStatement("insert into vacancy(description, salary, company_id) " +
+                "values (?, ?, ?) RETURNING vacancy_id");
 
-        vacancy.setId(id);
-        return id;
+        prs.setString(1, vacancy.getDescription());
+        prs.setDouble(2, vacancy.getSalary());
+        prs.setLong(3, company_id);
+
+        try {
+            ResultSet rs = prs.executeQuery();
+            rs.next();
+            Long id = rs.getLong(1);
+
+            vacancy.setId(id);
+            return id;
+        } finally {
+            prs.close();
+            conn.close();
+        }
     }
 
     public ArrayList<Vacancy> getByCompId(Long id) throws SQLException {

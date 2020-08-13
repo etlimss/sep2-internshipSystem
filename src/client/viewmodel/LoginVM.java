@@ -1,5 +1,6 @@
 package client.viewmodel;
 
+import client.InternshipClient;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,26 +18,34 @@ public class LoginVM {
     private BooleanProperty isStudent = new SimpleBooleanProperty();
     private BooleanProperty isCompany = new SimpleBooleanProperty();
     private InternshipMediator mediator;
+    private InternshipClient client;
 
-    public LoginVM(InternshipMediator mediator) {
+    public LoginVM(InternshipMediator mediator, InternshipClient client) {
         this.mediator = mediator;
+        this.client = client;
     }
 
-    public void login() {
+    public boolean loginStudent() {
         try {
-            if (isStudent.get()) {
-                Student s = mediator.loginStudent(email.get(), password.get());
+            Student s = mediator.loginStudent(email.get(), password.get());
 
-                //open vacancies list
-                System.out.println("STUDENT: " + s);
+            client.setloggedIn(s);
 
-            } else if (isCompany.get()) {
-                Company c = mediator.loginCompany(email.get(), password.get());
-                //open offers list
-                System.out.println(c);
-            }
-        }catch (RemoteException e)  {
-            System.out.println("Remote exception " + e);
+            return s != null;
+        } catch(RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean loginCompany() {
+        try {
+            Company c = mediator.loginCompany(email.get(), password.get());
+
+            client.setloggedIn(c);
+
+            return c != null;
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-
-<VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView prefHeight="358.0" prefWidth="600.0">
+      <TableView fx:id="vacancies" prefHeight="358.0" prefWidth="600.0">
         <columns>
-          <TableColumn prefWidth="599.0" text="Vacancies" />
+          <TableColumn fx:id="description" minWidth="0.0" prefWidth="479.0" text="Description" />
+          <TableColumn fx:id="salary" minWidth="1.0" prefWidth="195.0" text="Salary" />
         </columns>
       </TableView>
-      <Button mnemonicParsing="false" onAction="#openVacancy" prefHeight="44.0" prefWidth="177.0" text="Open" />
+      <Button fx:id="createVacancy" mnemonicParsing="false" onAction="#createVacancy" prefHeight="27.0" prefWidth="177.0" text="Create Vacancy" />
+      <Button fx:id="openVacancy" mnemonicParsing="false" onAction="#openVacancy" prefHeight="27.0" prefWidth="173.0" text="Open" />
    </children>
 </VBox>

@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import server.InternshipServer;
+import shared.domain.Student;
 import shared.mediator.InternshipMediator;
 
 import java.nio.file.Paths;
@@ -18,6 +19,8 @@ public class InternshipClient extends Application {
 
     public static final String host = "localhost";
 
+    private Object loggedIn;
+
     @Override
     public void start(Stage stage) throws Exception {
         Registry reg;
@@ -26,10 +29,8 @@ public class InternshipClient extends Application {
 
             InternshipMediator proxy = (InternshipMediator) reg.lookup(InternshipServer.mediatorName); // SHOULD NOT USE INTERNSHIPSERVER
 
-            proxy.loginStudent("g@gmail.com", "0000");
-
-            ViewModelFactory vmf = new ViewModelFactory(proxy);
-            ViewFactory vf = new ViewFactory(vmf);
+            ViewModelFactory vmf = new ViewModelFactory(proxy, this);
+            ViewFactory vf = new ViewFactory(vmf, stage);
 
             stage.setScene(new Scene(vf.loadView(vf.getLoginView(), "Login.fxml")));
             stage.show();
@@ -37,5 +38,13 @@ public class InternshipClient extends Application {
             System.out.println("Could not connect to the RMI registry: ");
             throw new RuntimeException(e);
         }
+    }
+
+    public Object getLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setloggedIn(Object loggedIn) {
+        this.loggedIn = loggedIn;
     }
 }
