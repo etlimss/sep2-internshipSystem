@@ -13,12 +13,11 @@ public class StudentDAO extends DAO<Student> {
     private VacancyDAO vdao;
 
     public StudentDAO(VacancyDAO vdao) {
-
-        super("student");
         this.vdao = vdao;
     }
 
-    public Long persists(Student student) throws SQLException {
+    @Override
+    public Student create(Student student) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
         Statement stmt = conn.createStatement();
         PreparedStatement prs = conn.prepareStatement("INSERT INTO student_vacancy VALUES(?, ?)");
@@ -57,7 +56,7 @@ public class StudentDAO extends DAO<Student> {
 
 
 
-        return student.getId();
+        return student;
     }
 
     public Student getByEmail(String email) throws SQLException {
@@ -84,6 +83,7 @@ public class StudentDAO extends DAO<Student> {
                 );
                 st.setId(rs.getLong(1));
                 prs.setLong(1,st.getId());
+
                 ResultSet vrs = prs.executeQuery();
                 while (vrs.next()) {
                     Vacancy v = vdao.getById(vrs.getLong(1));
@@ -101,6 +101,44 @@ public class StudentDAO extends DAO<Student> {
         }
     }
 
+    @Override
+    public Student getById(Long id) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+
+        String sql = String.format("SELECT * FROM student WHERE student_id = %d", id);
+
+        try (conn; Statement stmt = conn.createStatement(); PreparedStatement prs = conn.prepareStatement("SELECT vacancy_id FROM student_vacancy WHERE student_id = ?")) {
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                Student st = new Student(
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getInt(5),
+                        rs.getString(6).charAt(0),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10)
+                );
+                st.setId(rs.getLong(1));
+                prs.setLong(1, st.getId());
+
+                ResultSet vrs = prs.executeQuery();
+                while (vrs.next()) {
+                    Vacancy v = vdao.getById(vrs.getLong(1));
+
+                    st.addVacancy(v);
+                }
+                return st;
+            } else {
+                throw new IllegalArgumentException("No such student");
+            }
+        }
+    }
+
+    @Override
     public Student update(Student st) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
 
@@ -137,6 +175,27 @@ public class StudentDAO extends DAO<Student> {
             conn.close();
         }
     }
+
+    public void delete(Long id) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        String sql = String.format("DELETE FROM student WHERE student_id = %d", id);
+
+        Statement stmt = conn.createStatement();
+
+        PreparedStatement prs = conn.prepareStatement("DELETE FROM student_vacancy WHERE student_id = ?");
+        prs.setLong(1, id);
+
+
+        try {
+            stmt.executeQuery(sql);
+            prs.executeQuery();
+
+        } finally {
+            stmt.close();
+            conn.close();
+        }
+    }
+
 
     public void applyForVacancy(Long sid, Long vid) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);

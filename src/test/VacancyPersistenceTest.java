@@ -30,12 +30,14 @@ public class VacancyPersistenceTest {
 
     @Test
     public void testInsert() throws SQLException {
-        Vacancy v1 = new Vacancy(randomString(), randSalary());
         Company c1 = new Company(randomString(), randomString(), randomString(), randomString());
+
+        cdao.create(c1);
+
+        Vacancy v1 = new Vacancy(randomString(), randSalary(), c1.getId());
         assertNull(v1.getId());
 
-        cdao.persists(c1);
-        dao.persists(v1, c1.getId());
+        dao.create(v1);
 
         assertNotNull(v1.getId());
     }
@@ -43,11 +45,12 @@ public class VacancyPersistenceTest {
     @Test
     public void testGet() throws SQLException {
         String email = randomString();
-        Vacancy v1 = new Vacancy(randomString(), randSalary());
         Company c1 = new Company(randomString(), randomString(), randomString(), randomString());
 
-        cdao.persists(c1);
-        dao.persists(v1, c1.getId());
+        cdao.create(c1);
+
+        Vacancy v1 = new Vacancy(randomString(), randSalary(), c1.getId());
+        dao.create(v1);
 
         assertNotNull(v1.getId());
 
@@ -59,12 +62,12 @@ public class VacancyPersistenceTest {
 
     @Test
     public void testUpdate() throws SQLException {
-
-        Vacancy v1 = new Vacancy(randomString(), randSalary());
         Company c1 = new Company(randomString(), randomString(), randomString(), randomString());
 
-        cdao.persists(c1);
-        dao.persists(v1, c1.getId());
+        cdao.create(c1);
+
+        Vacancy v1 = new Vacancy(randomString(), randSalary(), c1.getId());
+        dao.create(v1);
 
         v1.setDescription(randomString());
 

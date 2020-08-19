@@ -25,7 +25,7 @@ public class InternshipServer {
         StudentDAO sdao = new StudentDAO(vdao);
 
         Student s = new Student("g@gmail.com","0000","ggg",12,'m',"","","","" );
-        sdao.persists(s);
+        sdao.create(s);
 
         InternshipMediator mediator = new InternshipMediatorIMPL(sdao, new CompanyDAO(vdao), vdao);
 

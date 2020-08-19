@@ -11,11 +11,14 @@ public class CompanyDAO extends DAO<Company> {
     private VacancyDAO vdao;
 
     public CompanyDAO(VacancyDAO vdao) {
-        super("company");
         this.vdao = vdao;
     }
 
-    public Long persists(Company company) throws SQLException {
+    @Override
+    public Company create(Company company) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        Statement stmt = conn.createStatement();
+
         String sql = String.format("insert into company(email, pass, company_name, description) " +
                         "values('%s', '%s', '%s', '%s') RETURNING company_id",
                 company.getEmail(),
@@ -23,15 +26,20 @@ public class CompanyDAO extends DAO<Company> {
                 company.getCompName(),
                 company.getDescription()
         );
-        Long id = insert(sql);
 
-        company.setId(id);
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
 
-        for (Vacancy v: company.getOffers()) {
-            vdao.persists(v, company.getId());
+            company.setId(rs.getLong(1));
+
+            return company;
+        } finally {
+            stmt.close();
+            conn.close();
         }
-        return id;
     }
+
 
     public Company getByEmail(String email) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
@@ -65,6 +73,7 @@ public class CompanyDAO extends DAO<Company> {
         }
     }
 
+    @Override
     public Company update(Company cmp) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
 
@@ -86,6 +95,54 @@ public class CompanyDAO extends DAO<Company> {
             stmt.executeUpdate();
 
             return cmp;
+        } finally {
+            stmt.close();
+            conn.close();
+        }
+    }
+
+    @Override
+    public Company getById(Long id) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        Statement stmt = conn.createStatement();
+
+        String sql = String.format("SELECT * FROM company WHERE company_id = %d", id);
+
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if(rs.next()) {
+                Company cmp = new Company(
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5)
+                );
+                cmp.setId(rs.getLong(1));
+
+                for (Vacancy v: vdao.getByCompId(cmp.getId())) {
+                    cmp.addOffer(v);
+                }
+                return cmp;
+            } else {
+                throw new IllegalArgumentException("No such company");
+            }
+
+        } finally {
+            stmt.close();
+            conn.close();
+        }
+    }
+    @Override
+    public void delete(Long id) throws SQLException {
+        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+        Statement stmt = conn.createStatement();
+
+        String sql = String.format("DELETE FROM company WHERE company_id = %d", id);
+
+        try {
+            stmt.executeQuery(sql);
+
         } finally {
             stmt.close();
             conn.close();

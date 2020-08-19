@@ -33,15 +33,15 @@ public class StudentPersistenceTest {
         Student s1 = new Student(email, randomString(), randomString(), rand.nextInt(), ((char) (rand.nextInt('Z' - 'A') + 'A')), randomString(),randomString(), randomString(), randomString());
         assertNull(s1.getId());
         Company c1 = new Company(randomString(), randomString(), randomString(), randomString());
+        cdao.create(c1);
 
         for(int i = 0; i < 10; i++) {
-            Vacancy v = new Vacancy(randomString(), randSalary());
+            Vacancy v = new Vacancy(randomString(), randSalary(), c1.getId());
             c1.addOffer(v);
             s1.addVacancy(v);
         }
-        cdao.persists(c1);
 
-        dao.persists(s1);
+        dao.create(s1);
 
         assertNotNull(s1.getId());
 
@@ -57,7 +57,7 @@ public class StudentPersistenceTest {
         String email = randomString();
         Student st = new Student(email, randomString(), randomString(), rand.nextInt(), ((char) (rand.nextInt('Z' - 'A') + 'A')), randomString(),randomString(), randomString(), randomString());
 
-        dao.persists(st);
+        dao.create(st);
 
         assertNotNull(st.getId());
 
@@ -75,7 +75,7 @@ public class StudentPersistenceTest {
 
         Student s1 =  new Student(email, randomString(), randomString(), rand.nextInt(), ((char) (rand.nextInt('Z' - 'A') + 'A')), randomString(),randomString(), randomString(), randomString());
 
-        dao.persists(s1);
+        dao.create(s1);
 
         s1.setAge(15);
 

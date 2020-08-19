@@ -8,18 +8,14 @@ import java.util.ArrayList;
 
 public class VacancyDAO extends DAO<Vacancy> {
 
-    public VacancyDAO() {
-        super("vacancy");
-    }
-
-    public Long persists(Vacancy vacancy, Long company_id) throws SQLException {
+    public Vacancy create(Vacancy vacancy) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
         PreparedStatement prs = conn.prepareStatement("insert into vacancy(description, salary, company_id) " +
                 "values (?, ?, ?) RETURNING vacancy_id");
 
         prs.setString(1, vacancy.getDescription());
         prs.setDouble(2, vacancy.getSalary());
-        prs.setLong(3, company_id);
+        prs.setLong(3, vacancy.getCompany());
 
         try {
             ResultSet rs = prs.executeQuery();
@@ -27,7 +23,7 @@ public class VacancyDAO extends DAO<Vacancy> {
             Long id = rs.getLong(1);
 
             vacancy.setId(id);
-            return id;
+            return vacancy;
         } finally {
             prs.close();
             conn.close();
@@ -47,7 +43,8 @@ public class VacancyDAO extends DAO<Vacancy> {
             while(rs.next()) {
                 Vacancy v = new Vacancy(
                         rs.getString(2),
-                        rs.getDouble(3)
+                        rs.getDouble(3),
+                        rs.getLong(4)
                 );
                 v.setId(rs.getLong(1));
                 vac.add(v);
@@ -83,7 +80,8 @@ public class VacancyDAO extends DAO<Vacancy> {
         }
     }
 
-    public void remove(Long id) throws SQLException {
+    @Override
+    public void delete(Long id) throws SQLException {
         Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
 
         String sql = "DELETE FROM vacancy WHERE vacancy_id = ?";
@@ -112,7 +110,8 @@ public class VacancyDAO extends DAO<Vacancy> {
             if(rs.next()) {
                 Vacancy v = new Vacancy(
                         rs.getString(2),
-                        rs.getDouble(3)
+                        rs.getDouble(3),
+                        rs.getLong(4)
                 );
                 v.setId(rs.getLong(1));
                 return v;
@@ -140,7 +139,8 @@ public class VacancyDAO extends DAO<Vacancy> {
             while(rs.next()) {
                 Vacancy v = new Vacancy(
                         rs.getString(2),
-                        rs.getDouble(3)
+                        rs.getDouble(3),
+                        rs.getLong(4)
                 );
                 v.setId(rs.getLong(1));
                 vac.add(v);
@@ -150,6 +150,5 @@ public class VacancyDAO extends DAO<Vacancy> {
             stmt.close();
             conn.close();
         }
-
     }
 }
