@@ -11,6 +11,10 @@ public class ViewModelFactory {
     private LoginVM loginvm;
     private InternshipClient client;
     private CreateVacancyVM  cvvm;
+    private VacancyListVM vlvm;
+    private RegistrationStudentVM rsvm;
+    private RegistrationCompanyVM rcvm;
+    private VacancyVM vvm;
 
     public ViewModelFactory(InternshipMediator internmed, InternshipClient client) {
         this.internmed = internmed;
@@ -26,11 +30,17 @@ public class ViewModelFactory {
 
 
     public VacancyListVM getVacanciesVM(){
-        return new VacancyListVM(internmed, client);
+        if(vlvm == null) {
+          vlvm = new VacancyListVM(internmed, client);
+        }
+        return vlvm;
     }
 
     public RegistrationStudentVM getStudRegVM(){
-        return new RegistrationStudentVM(internmed);
+      if(rsvm == null) {
+          rsvm = new RegistrationStudentVM(internmed);
+      }
+      return rsvm;
     }
 
     public CreateVacancyVM getCreateVacancyVM(){
@@ -40,9 +50,16 @@ public class ViewModelFactory {
         return cvvm;
     }
     public RegistrationCompanyVM getCompRegVM(){
-        return new RegistrationCompanyVM(internmed);
+       if(rcvm == null){
+           rcvm = new RegistrationCompanyVM(internmed);
+       }
+       return rcvm;
     }
     public VacancyVM getVacancyVM(Vacancy v ){
-        return new VacancyVM(internmed,client,v);
+        if (vvm == null){
+            vvm = new VacancyVM(internmed,client,v);
+        }
+
+        return vvm;
     }
 }
