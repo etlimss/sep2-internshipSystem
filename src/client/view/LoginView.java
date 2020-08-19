@@ -37,10 +37,14 @@ public class LoginView {
         if(student.isSelected()) {
             if(lvm.loginStudent()) {
                 vf.open(vf.getVacanciesView(), "VacancyListView.fxml");
+            } else {
+                System.out.println("Incorrect username or password");
             }
         } else if(company.isSelected()) {
             if(lvm.loginCompany())
                 vf.open(vf.getVacanciesView(), "VacancyListView.fxml");
+            else
+                System.out.println("Incorrect username or password");
         }
     }
 

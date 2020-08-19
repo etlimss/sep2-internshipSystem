@@ -33,7 +33,7 @@ public class InternshipMediatorIMPL implements InternshipMediator {
         Company cmp = new Company( email,  password,  compName,  description);
 
         try{
-            cdao.persists(cmp);
+            cdao.create(cmp);
         }
         catch (SQLException e) {
             throw new RuntimeException();
@@ -47,7 +47,7 @@ public class InternshipMediatorIMPL implements InternshipMediator {
         Student student = new Student(email, password, fName, age, gender, education, workingEx, personalStat, contInfo);
 
         try {
-            sdao.persists(student);
+            sdao.create(student);
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -57,10 +57,10 @@ public class InternshipMediatorIMPL implements InternshipMediator {
 
     @Override
     public Vacancy createVacancy(String description, double salary, Long id) throws RemoteException {
-        Vacancy vacancy = new Vacancy(description, salary);
+        Vacancy vacancy = new Vacancy(description, salary, id);
 
         try {
-            vdao.persists(vacancy, id);
+            vdao.create(vacancy);
         } catch (SQLException e) {
             throw new RuntimeException();//Runtime cuz itis unchecked and compiler dont give a fuk about it
         }
@@ -158,7 +158,7 @@ public class InternshipMediatorIMPL implements InternshipMediator {
     @Override
     public void removeVacancy(Vacancy v) throws RemoteException {
         try {
-            vdao.remove(v.getId());
+            vdao.delete(v.getId());
         } catch (SQLException e) {
             throw new RuntimeException();
         }

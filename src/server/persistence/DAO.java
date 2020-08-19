@@ -6,30 +6,15 @@ import java.util.List;
 
 public abstract class DAO<T> {
 
-    private String tableName;
-
     protected final static String DBURL = "jdbc:postgresql://localhost/Sep2";
     protected final static String DBUSER = "postgres";
-    protected final static String DBPASS = "6311";
+    protected final static String DBPASS = "smilte";
 
-    public DAO (String tableName) {
-        this.tableName = tableName;
-    }
+    public abstract T create(T t) throws SQLException;
 
-    protected Long insert(String sql) throws SQLException {
-        Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
-        Statement stmt = conn.createStatement();
+    public abstract T getById(Long id) throws SQLException;
 
-        Long id = null;
+    public abstract T update(T t) throws SQLException;
 
-        try {
-            ResultSet rs = stmt.executeQuery(sql);
-            rs.next();
-
-            return rs.getLong(1);
-        } finally {
-            stmt.close();
-            conn.close();
-        }
-    }
+    public abstract void delete(Long id) throws SQLException;
 }

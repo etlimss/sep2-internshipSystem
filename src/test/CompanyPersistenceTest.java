@@ -35,7 +35,7 @@ public class CompanyPersistenceTest {
         assertNull(c1.getId());
 
 
-        dao.persists(c1);
+        dao.create(c1);
 
         assertNotNull(c1.getId());
     }
@@ -45,7 +45,7 @@ public class CompanyPersistenceTest {
         String email = randomString();
         Company cm = new Company(email, randomString(), randomString(), randomString());
 
-        dao.persists(cm);
+        dao.create(cm);
 
         assertNotNull(cm.getId());
 
@@ -63,7 +63,7 @@ public class CompanyPersistenceTest {
 
         Company cmp = new Company(email, randomString(), randomString(), randomString());
 
-        dao.persists(cmp);
+        dao.create(cmp);
 
         cmp.setDescription(randomString());
 
@@ -81,11 +81,11 @@ public class CompanyPersistenceTest {
 
         Company cmp = new Company(email, randomString(), randomString(), randomString());
 
+        dao.create(cmp);
 
         for(int i = 0; i < 10; i++) {
-            cmp.addOffer(new Vacancy(randomString(), randSalary()));
+            cmp.addOffer(new Vacancy(randomString(), randSalary(), cmp.getId()));
         }
-        dao.persists(cmp);
         Company res = dao.getByEmail(email);
 
         assertEquals(cmp.getOffers(), res.getOffers());
