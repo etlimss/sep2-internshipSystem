@@ -62,7 +62,7 @@ public class InternshipMediatorIMPL implements InternshipMediator {
         try {
             vdao.persists(vacancy, id);
         } catch (SQLException e) {
-            throw new RuntimeException();//Runtime cuz itis unchecked and compiler dont give a fuk about it
+            throw new RuntimeException();//Runtime cuz itis unchecked
         }
 
 
